@@ -68,8 +68,8 @@ jobs:
       - name: Pull and deploy Docker image to test
         run: |
           # Stop and remove existing Docker container
-          # sudo docker stop my-app-container || true
-          # sudo docker rm my-app-container || true
+          sudo docker stop my-app-container || true
+          sudo docker rm my-app-container || true
 
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:test
           sudo docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:test) || true
@@ -87,8 +87,8 @@ jobs:
       - name: Pull and deploy Docker image to prod
         run: |
           # Stop and remove existing Docker container
-          # sudo docker stop my-app-container || true
-          # sudo docker rm my-app-container || true
+          sudo docker stop my-app-container || true
+          sudo docker rm my-app-container || true
 
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:master
           sudo docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:master) || true
