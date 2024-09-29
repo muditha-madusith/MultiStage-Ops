@@ -50,6 +50,7 @@ jobs:
           # Stop and remove existing Docker containers and images
           sudo docker stop my-app-container || true
           sudo docker rm my-app-container || true
+          sudo docker container prune -f
           sudo docker image prune -f
 
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:test
@@ -91,6 +92,7 @@ jobs:
           # Stop and remove existing Docker containers and images
           sudo docker stop my-app-container || true
           sudo docker rm my-app-container || true
+          sudo docker container prune -f
           sudo docker image prune -f
 
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:master
