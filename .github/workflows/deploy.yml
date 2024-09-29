@@ -40,6 +40,9 @@ jobs:
     if: github.ref == 'refs/heads/test'
     runs-on: self-hosted-test  # Tags this job to run on the test environment runner
     steps:
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
       - name: Pull and deploy Docker image to test
         run: |
           # Stop and remove existing Docker container
@@ -55,6 +58,9 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: self-hosted-prod  # Tags this job to run on the prod environment runner
     steps:
+      - name: Docker Login
+        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
       - name: Pull and deploy Docker image to prod
         run: |
           # Stop and remove existing Docker container
