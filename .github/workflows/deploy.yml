@@ -52,7 +52,7 @@ jobs:
 
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:test
           sudo docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:test) || true
-          sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdevimg:test
+          sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:test
 
   deploy-prod:
     needs: build
@@ -71,7 +71,7 @@ jobs:
 
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:master
           sudo docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:master) || true
-          sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdevimg:test
+          sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:master
 
 
 
