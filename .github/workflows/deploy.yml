@@ -40,30 +40,38 @@ jobs:
     if: github.ref == 'refs/heads/test'
     runs-on: self-hosted-test  # Tags this job to run on the test environment runner
     steps:
+      - name: Docker Login
+        run: |
+          sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Pull and deploy Docker image to test
         run: |
           # Stop and remove existing Docker container
-          sudo docker stop my-app-container || true
-          sudo docker rm my-app-container || true
+          # sudo docker stop my-app-container || true
+          # sudo docker rm my-app-container || true
 
-          docker pull opsdev/opsdevimg:test
-          docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:test) || true
-          sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdevimg:test
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:test
+          sudo docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:test) || true
+          sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:test
 
   deploy-prod:
     needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: self-hosted-prod  # Tags this job to run on the prod environment runner
     steps:
+      - name: Docker Login
+        run: |
+          sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Pull and deploy Docker image to prod
         run: |
           # Stop and remove existing Docker container
-          sudo docker stop my-app-container || true
-          sudo docker rm my-app-container || true
+          # sudo docker stop my-app-container || true
+          # sudo docker rm my-app-container || true
 
-          docker pull opsdev/opsdevimg:master
-          docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:master) || true
-          sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdevimg:test
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:master
+          sudo docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:master) || true
+          sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:master
 
 
 
@@ -84,5 +92,5 @@ jobs:
             }
             EOL
   
-            # Restart Nginx to apply the changes-
+            # Restart Nginx to apply the changes
             sudo systemctl restart nginx
