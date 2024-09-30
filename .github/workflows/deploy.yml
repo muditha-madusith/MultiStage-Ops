@@ -60,7 +60,7 @@ jobs:
             sudo tee /etc/nginx/sites-available/default << EOL
             server {
               listen 80;
-              server_name test.mydom.org;
+              server_name test.balloontrump.xyz;
   
               location / {
                 proxy_pass http://localhost:3000;
@@ -100,7 +100,7 @@ jobs:
             sudo tee /etc/nginx/sites-available/default << EOL
             server {
             listen 80;
-            server_name mydom.org;
+            server_name balloontrump.xyz;
     
             location / {
                 proxy_pass http://localhost:3000;
