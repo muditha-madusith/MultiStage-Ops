@@ -25,7 +25,6 @@
 - [Domains and Routing](https://www.notion.so/MultiStage-Ops-11117c74f6d4808a9890df88781b9837?pvs=21)
     - [URLs](https://www.notion.so/MultiStage-Ops-11117c74f6d4808a9890df88781b9837?pvs=21)
     - [SSL Configuration](https://www.notion.so/MultiStage-Ops-11117c74f6d4808a9890df88781b9837?pvs=21)
-- [License](https://www.notion.so/MultiStage-Ops-11117c74f6d4808a9890df88781b9837?pvs=21)
 
 ---
 
