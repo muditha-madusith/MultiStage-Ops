@@ -34,11 +34,10 @@ jobs:
         run: |
           sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
           sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:${{ github.ref_name }}
-            
 
   deploy-test:
     needs: build
-    if: github.ref == 'refs/heads/test'
+    if: github.ref_name == 'test'
     runs-on: self-hosted-test  # Tags this job to run on the test environment runner
     steps:
       - name: Docker Login
@@ -54,7 +53,6 @@ jobs:
           sudo docker image prune -f
 
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:test
-          sudo docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:test) || true
           sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:test
 
       - name: Set up Nginx for port forwarding 
@@ -62,7 +60,7 @@ jobs:
             sudo tee /etc/nginx/sites-available/default << EOL
             server {
               listen 80;
-              server_name _;
+              server_name test.mydom.org;
   
               location / {
                 proxy_pass http://localhost:3000;
@@ -77,10 +75,9 @@ jobs:
             # Restart Nginx to apply the changes
             sudo systemctl restart nginx
 
-
   deploy-prod:
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref_name == 'master'
     runs-on: self-hosted-prod  # Tags this job to run on the prod environment runner
     steps:
       - name: Docker Login
@@ -96,7 +93,6 @@ jobs:
           sudo docker image prune -f
 
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:master
-          sudo docker stop $(docker ps -q --filter ancestor=opsdev/opsdevimg:master) || true
           sudo docker run -d -p 3000:3000 --name my-app-container ${{ secrets.DOCKERHUB_USERNAME }}/opsdev:master
 
       - name: Set up Nginx for port forwarding 
@@ -104,7 +100,7 @@ jobs:
             sudo tee /etc/nginx/sites-available/default << EOL
             server {
             listen 80;
-            server_name _;
+            server_name mydom.org;
     
             location / {
                 proxy_pass http://localhost:3000;
